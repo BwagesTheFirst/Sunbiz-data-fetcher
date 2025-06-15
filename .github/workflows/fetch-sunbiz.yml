@@ -1,1 +1,20 @@
+  name: Fetch SunBiz Data
+
+  on: [push, workflow_dispatch]
+
+  jobs:
+    fetch:
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+      - run: pip install requests
+      - run: mkdir -p data
+      - run: python fetch_sunbiz.py
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Update" || echo "No changes"
+          git push || echo "No push needed"
 
