@@ -1,6 +1,11 @@
 name: Fetch SunBiz Data
 
 on:
-    schedule:
-      - cron: '0 7 * * 0'
-    workflow_dispatch:
+workflow_dispatch:
+
+jobs:
+   fetch:
+     runs-on: ubuntu-latest
+     steps:
+        - uses: actions/checkout@v3
+        - run: python fetch_sunbiz.py
