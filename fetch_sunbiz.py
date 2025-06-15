@@ -1,5 +1,5 @@
-  #!/usr/bin/env python3
-  """
+#!/usr/bin/env python3
+"""
   Fetch SunBiz data from Florida Department of State
   This script downloads corporate data and makes it available for WordPress
   """
