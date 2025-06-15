@@ -3,14 +3,10 @@
   Fetch SunBiz data from Florida Department of State
   """
   import os
-  import requests
-  import zipfile
+  import json
   from datetime import datetime
 
   # Configuration
-  SFTP_BASE = "https://sftp.floridados.gov"
-  USERNAME = "Public"
-  PASSWORD = "PubAccess1845!"
   DATA_DIR = "data"
 
   def download_sunbiz_data():
@@ -20,25 +16,60 @@
       # Create data directory
       os.makedirs(DATA_DIR, exist_ok=True)
 
-      # Try to download the quarterly corporate data
-      # Note: Direct SFTP download via HTTPS may not work, so we'll use alternative methods
-
-      # Alternative: Download sample data or use web scraping
+      # For now, create sample data to test the workflow
       create_sample_data()
 
-      print("Data fetch completed")
+      # Create a status file
+      status = {
+          "last_update": datetime.now().isoformat(),
+          "status": "success",
+          "message": "Sample data created successfully"
+      }
+
+      with open(os.path.join(DATA_DIR, "status.json"), "w") as f:
+          json.dump(status, f, indent=2)
+
+      print("Data fetch completed successfully")
 
   def create_sample_data():
       """Create sample data file for testing"""
-      sample_data = """Sample HOA data for testing
-  This will be replaced with real data when we implement the full fetcher
-  Generated at: {}
-  """.format(datetime.now())
+      print("Creating sample HOA data...")
 
-      with open(os.path.join(DATA_DIR, "sample_data.txt"), "w") as f:
-          f.write(sample_data)
+      # Create a sample fixed-width data file (1440 chars per line)
+      associations = [
+          ("M000000000001", "PELICAN BAY FOUNDATION INC"),
+          ("M000000000002", "FIDDLERS CREEK COMMUNITY ASSOCIATION INC"),
+          ("M000000000003", "BONITA BAY CLUB INC"),
+          ("M000000000004", "THE BROOKS COMMUNITY ASSOCIATION INC"),
+          ("M000000000005", "MIROMAR LAKES COMMUNITY ASSOCIATION INC"),
+      ]
 
-      print("Created sample data file")
+      content = ""
+      for doc_num, name in associations:
+          # Create fixed-width record (1440 characters)
+          record = doc_num.ljust(12)  # Document number
+          record += name.ljust(192)    # Entity name
+          record += "A"                # Status (Active)
+          record += "CONDO".ljust(15)  # Type
+
+          # Add address fields
+          record += "123 Main St".ljust(42)      # Address 1
+          record += "".ljust(42)                  # Address 2
+          record += "Fort Myers".ljust(28)        # City
+          record += "FL".ljust(2)                 # State
+          record += "33901".ljust(10)             # Zip
+          record += "US".ljust(2)                 # Country
+
+          # Pad to 1440 characters
+          record = record.ljust(1440)
+          content += record + "\n"
+
+      # Save to file
+      output_file = os.path.join(DATA_DIR, "cordata0.txt")
+      with open(output_file, "w") as f:
+          f.write(content)
+
+      print(f"Created {output_file} with {len(associations)} sample associations")
 
   if __name__ == "__main__":
       download_sunbiz_data()
