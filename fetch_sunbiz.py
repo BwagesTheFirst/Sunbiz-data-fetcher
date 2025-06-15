@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-  Fetch SunBiz data from Florida Department of State
-  This script downloads corporate data and makes it available for WordPress
-  """
+Fetch SunBiz data from Florida Department of State
+This script downloads corporate data and makes it available for WordPress
+"""
   import os
   import json
   from datetime import datetime
