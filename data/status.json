@@ -1,5 +1,6 @@
 {
-  "last_update": "2025-06-15T16:27:29.503325",
+  "last_update": "2025-06-15T16:51:35.302591",
   "status": "success",
-  "message": "Data fetch completed"
+  "message": "Created name-matched data with 999 associations",
+  "matching_method": "name-based"
 }
